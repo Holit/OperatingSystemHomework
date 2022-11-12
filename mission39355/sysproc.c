@@ -97,11 +97,7 @@ VOID
 ConsoleCmdDir(
 	IN HANDLE StdHandle
 	);
-PRIVATE
-VOID
-ConsoleCmdHelp(
-    IN HANDLE StdHandle
-    );
+
 ULONG
 KiInitializationThread(
 	IN PVOID Parameter
@@ -307,11 +303,7 @@ KiShellThread(
 		} else if (0 == stricmp(Line, "dir")) {
 			ConsoleCmdDir(StdHandle);
 			continue;
-        } else if(0 == stricmp(Line,"help"))
-        {
-            ConsoleCmdHelp(StdHandle);
-            continue;
-        }
+		}
 
 		//
 		// 将可执行文件名从Line中拷贝至Image中。如果仅给出了文件名则自动在文件名
@@ -2489,36 +2481,6 @@ PRIVATE VOID GetDevice( )
 	KeEnableInterrupts(IntState);	// 开中断
 	StopKeyboard = 0;
 }
-
-//////////////////////////////////////////////////////////////////////////
-//
-// 下面是和控制台命令 help 相关的代码。
-//
-PRIVATE
-VOID
-ConsoleCmdHelp(
-IN HANDLE StdHandle)
-{
-	BOOL IntState;
-
-	IntState = KeEnableInterrupts(FALSE);	// 关中断
-    fprintf(StdHandle, "ver\t Show EOS version.\n");
-    fprintf(StdHandle, "mm\t Dumps secondary page table mapping information for system processes\n");
-    fprintf(StdHandle, "ds\t Access the specified track on the floppy disk\n");
-    fprintf(StdHandle, "rr\t Test time slice round robin scheduling\n");
-    fprintf(StdHandle, "loop\t Start dead-loop thread\n");
-    fprintf(StdHandle, "suspend\t Suspends the thread specified by ID\n");
-    fprintf(StdHandle, "resume\t Resumes the thread specified by ID\n");
-    fprintf(StdHandle, "vm\t Statistics outputs information about the virtual address descriptor of the process specified by the process ID\n");
-    fprintf(StdHandle, "pm\t Statistics output physical memory information\n");
-    fprintf(StdHandle, "pt\t Statistics output process and thread information\n");
-    fprintf(StdHandle, "dir\t Output information about files in the root directory of a floppy disk\n");
-    fprintf(StdHandle, "sd\t Scan floppy disk and output relevant information\n");
-    fprintf(StdHandle, "help\t Display this information\n");
-
-	KeEnableInterrupts(IntState);	// 开中断
-}
-
 
 
 #endif
